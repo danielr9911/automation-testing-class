@@ -1,93 +1,130 @@
-# MicroBanco - Proyecto de Testing
-## Clase 12: Pruebas Automatizadas
+# MicroBanco - Proyecto Testing Discovery Challenge
+## Clase 12: Pruebas Automatizadas (Versión Discovery)
 
-Este proyecto simula una API básica de servicios bancarios para aprender testing automatizado con Python y pytest.
+**🎯 OBJETIVO:** Crear tests desde cero mediante descubrimiento colaborativo
+
+## ¿Qué es diferente en esta versión?
+
+- ❌ **NO** hay ejemplos de tests completos
+- ✅ **SÍ** hay código real con bugs para encontrar
+- ✅ **SÍ** hay coverage analysis integrado
+- ✅ **SÍ** hay discovery auténtico
 
 ## Instalación
 
-1. Asegúrate de tener Python 3.7+ instalado:
-```bash
-python --version
-```
-
-2. Instala las dependencias:
+1. Clonar/descargar este proyecto
+2. Instalar dependencias:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Ejecuta los tests:
+3. Explorar el código:
 ```bash
-pytest -v tests/
+python src/microbanco.py
 ```
 
-## Estructura del Proyecto
-
-```
-microbanco_project/
-├── src/
-│   ├── __init__.py
-│   └── microbanco.py        # API principal de MicroBanco
-├── tests/
-│   ├── __init__.py
-│   └── test_microbanco.py   # Tests para la API
-├── requirements.txt         # Dependencias del proyecto
-└── README.md               # Este archivo
-```
-
-## Funcionalidades a Testear
-
-### 1. Transferir Dinero
-- Transferencias exitosas
-- Validación de montos negativos
-- Validación de cuentas inexistentes
-- Validación de saldo insuficiente
-
-### 2. Calcular Interés
-- Cálculo con valores normales
-- Manejo de días = 0
-- Manejo de tasas negativas
-- Manejo de capitales muy grandes
-
-### 3. Validar Cuenta
-- Formatos válidos de cuenta
-- Formatos inválidos
-- Cuentas nulas o vacías
-- Longitudes incorrectas
-
-## Casos de Prueba Sugeridos
-
-### Tests Positivos (Deberían funcionar):
-- `test_transferir_monto_positivo()`
-- `test_calcular_interes_normal()`
-- `test_validar_cuenta_valida()`
-
-### Tests Negativos (Deberían fallar elegantemente):
-- `test_transferir_monto_negativo()`
-- `test_calcular_interes_dias_cero()`
-- `test_validar_cuenta_formato_incorrecto()`
-
-## Comandos Útiles
-
+4. Crear tu primer test:
 ```bash
-# Ejecutar todos los tests
-pytest
-
-# Ejecutar con más detalle
-pytest -v
-
-# Ejecutar con cobertura
-pytest --cov=src
-
-# Ejecutar un test específico
-pytest tests/test_microbanco.py::test_transferir_monto_positivo
+# El archivo tests/test_microbanco.py está vacío
+# ¡Es tu trabajo llenarlo!
 ```
 
-## Para Sprint 2
+## Tu Challenge
 
-Este ejercicio te prepara para implementar testing en tu proyecto real. Considera:
+### 🎯 **Meta Principal:**
+Crear una suite de tests que tenga **80%+ de coverage** y encuentre los bugs ocultos en MicroBanco.
 
-1. ¿Cuáles son las 3 funciones más críticas de tu proyecto?
-2. ¿Qué tipo de pruebas necesita cada una?
-3. ¿Qué framework de testing usarás en tu tecnología?
+### 📊 **Comandos de Coverage:**
+```bash
+# Tests básicos
+pytest tests/ -v
 
-¡Buena suerte, Testing Heroes! 🚀
+# Con coverage
+pytest --cov=src tests/
+
+# Coverage detallado con líneas faltantes
+pytest --cov=src --cov-report=term-missing tests/
+
+# Coverage con reporte HTML bonito
+pytest --cov=src --cov-report=html tests/
+# Después abre: htmlcov/index.html
+```
+
+### 🐛 **Bugs a Encontrar:**
+El código de MicroBanco tiene **al menos 3 bugs intencionales**. ¿Puedes encontrarlos todos?
+
+### 🏆 **Targets de Success:**
+- 📝 **Mínimo 5 tests** diferentes
+- 📊 **Coverage 80%+** 
+- 🐛 **Al menos 2 bugs** encontrados
+- ✅ **Todos los tests** pasan (después de arreglar bugs)
+
+## Funciones a Testear
+
+### 1. `transferir(origen, destino, monto)`
+- ¿Qué pasa con montos negativos?
+- ¿Qué pasa si las cuentas no existen?
+- ¿Qué pasa si no hay saldo suficiente?
+
+### 2. `calcular_interes(capital, dias, tasa)`  
+- ¿Qué pasa si días = 0?
+- ¿Qué pasa con números muy grandes?
+- ¿Qué pasa con valores negativos?
+
+### 3. `validar_cuenta(numero_cuenta)`
+- ¿Qué formatos son válidos?
+- ¿Qué pasa con None o strings vacíos?
+- ¿Qué pasa con caracteres especiales?
+
+### 4. `consultar_saldo(numero_cuenta)`
+- ¿Funciona con cuentas válidas?
+- ¿Maneja cuentas inválidas correctamente?
+
+## Tips para el Success
+
+### 🔍 **Strategy de Testing:**
+1. **Empieza simple**: Un test que funcione
+2. **Piensa en edge cases**: ¿Qué puede salir mal?
+3. **Usa coverage**: Identifica código no testeado
+4. **Busca bugs**: Si algo se ve raro, ¡probablemente lo es!
+
+### ⚡ **Pytest Tips:**
+```python
+# Estructura básica de un test
+def test_nombre_descriptivo():
+    # ARRANGE: Preparar datos
+    banco = MicroBanco()
+    
+    # ACT: Ejecutar función
+    resultado = banco.alguna_funcion()
+    
+    # ASSERT: Verificar resultado
+    assert resultado == valor_esperado
+```
+
+### 📊 **Coverage Tips:**
+- **Verde** = línea testeada ✅
+- **Rojo** = línea NO testeada ❌
+- **Target**: Todas las líneas importantes en verde
+
+## Recursos
+
+### 📚 **Documentación:**
+- [pytest docs](https://docs.pytest.org/)
+- [coverage docs](https://coverage.readthedocs.io/)
+
+### 🆘 **Si te atascas:**
+1. Lee los mensajes de error cuidadosamente
+2. Usa `print()` para debug
+3. Pregunta al instructor
+4. Colabora con otros equipos
+
+## 🏁 **Entrega Final**
+
+Al terminar debes tener:
+- `tests/test_microbanco.py` con tus tests
+- Coverage report mostrando 80%+
+- Lista de bugs encontrados
+- Plan de mejoras para el código
+
+**¡Good luck, Testing Heroes!** 🚀

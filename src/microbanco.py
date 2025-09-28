@@ -1,11 +1,13 @@
 """
-MicroBanco API - Sistema de Servicios Bancarios
-===============================================
+MicroBanco API - Sistema de Servicios Bancarios (Discovery Version)
+================================================================
 
-Esta es una simulación simple de una API bancaria para propósitos educativos.
-Contiene bugs intencionales para ser encontrados mediante testing.
+Esta es una simulación de una API bancaria para el Challenge de Testing Discovery.
+Contiene bugs sutiles que los estudiantes deben encontrar mediante testing sistemático.
 
-Autor: Testing Masterclass 2025-2
+🎯 CHALLENGE: Encuentra los bugs mediante testing, no leyendo código!
+
+Autor: Testing Masterclass 2025-2  
 Fecha: Septiembre 2025
 """
 
@@ -17,13 +19,10 @@ class MicroBanco:
     """
     API principal de MicroBanco - Startup Fintech
     
-    Funcionalidades principales:
-    1. Transferir dinero entre cuentas
-    2. Calcular interés sobre capital
-    3. Validar formato de cuentas bancarias
+    🎯 TU MISIÓN: Crear tests que encuentren los bugs ocultos
     
-    ⚠️ ADVERTENCIA: Este código contiene bugs intencionales
-    para propósitos educativos de testing.
+    ⚠️ ADVERTENCIA: Este código tiene bugs sutiles.
+    ¡No los busques leyendo código - encuéntralos testeando!
     """
     
     def __init__(self):
@@ -33,7 +32,7 @@ class MicroBanco:
         ]
         self.saldos = {
             "123456": 1000.0,
-            "789012": 2500.0,
+            "789012": 2500.0, 
             "345678": 500.0,
             "901234": 10000.0,
             "567890": 0.0
@@ -45,17 +44,11 @@ class MicroBanco:
         
         Args:
             cuenta_origen: Número de cuenta que envía el dinero
-            cuenta_destino: Número de cuenta que recibe el dinero  
-            monto: Cantidad a transferir (debe ser positiva)
+            cuenta_destino: Número de cuenta que recibe el dinero
+            monto: Cantidad a transferir
             
         Returns:
-            Dict con status ("exitoso" o "error"), monto transferido y mensaje
-            
-        Ejemplo:
-            >>> banco = MicroBanco()
-            >>> resultado = banco.transferir("123456", "789012", 100.0)
-            >>> print(resultado["status"])
-            "exitoso"
+            Dict con status, mensaje, monto y saldos actualizados
         """
         
         # Validación básica de parámetros
@@ -66,21 +59,22 @@ class MicroBanco:
                 "monto": 0
             }
         
-        # ¿BUG? ¿Qué pasa si monto es negativo?
-        # Los estudiantes deben encontrar este caso
+        # 🐛 BUG #1: ¿Qué pasa si monto es negativo?
+        # El código actual NO valida montos negativos
+        # Esto permite "robar" dinero usando montos negativos
         
         # Verificar que las cuentas existen
         if cuenta_origen not in self.cuentas_activas:
             return {
-                "status": "error", 
-                "mensaje": "Cuenta origen no existe",
+                "status": "error",
+                "mensaje": "Cuenta origen no existe", 
                 "monto": 0
             }
             
         if cuenta_destino not in self.cuentas_activas:
             return {
                 "status": "error",
-                "mensaje": "Cuenta destino no existe", 
+                "mensaje": "Cuenta destino no existe",
                 "monto": 0
             }
         
@@ -108,67 +102,56 @@ class MicroBanco:
         """
         Calcula el interés simple sobre un capital
         
-        Formula: Interés = Capital * Tasa * (Días / 365)
+        Fórmula: Interés = Capital * Tasa * (Días / 365)
         
         Args:
-            capital: Monto principal sobre el que calcular interés
-            dias: Número de días para el cálculo
-            tasa_anual: Tasa de interés anual (por defecto 5% = 0.05)
+            capital: Monto principal  
+            dias: Número de días
+            tasa_anual: Tasa de interés anual (default 5%)
             
         Returns:
             float: Interés calculado
-            
-        Ejemplo:
-            >>> banco = MicroBanco()
-            >>> interes = banco.calcular_interes(1000, 30, 0.05)
-            >>> round(interes, 2)
-            4.11
         """
         
-        # ¿BUG? ¿Qué pasa si dias es 0? ¿División por cero en algún lado?
-        # ¿Qué pasa si capital es negativo?
-        # ¿Qué pasa si tasa es negativa?
+        # 🐛 BUG #2: ¿Qué pasa si dias es 0?
+        # División por cero potencial en algunos casos edge
         
-        # Cálculo de interés simple
+        # 🐛 BUG #3: ¿Qué pasa con valores negativos?
+        # ¿Es lógico tener interés negativo? ¿Capital negativo?
+        
+        # Cálculo básico
+        if dias <= 0:
+            return 0.0  # ¿Es correcto? ¿O debería dar error?
+        
         interes = capital * tasa_anual * (dias / 365)
-        
         return round(interes, 2)
     
     def validar_cuenta(self, numero_cuenta: str) -> bool:
         """
         Valida el formato de un número de cuenta bancaria
         
-        Formato válido: Exactamente 6 dígitos numéricos
-        Ejemplos válidos: "123456", "000001", "999999"
-        Ejemplos inválidos: "12345", "abc123", "1234567", None
+        Formato esperado: Exactamente 6 dígitos numéricos
         
         Args:
-            numero_cuenta: String con el número de cuenta a validar
+            numero_cuenta: String con el número de cuenta
             
         Returns:
             bool: True si es válida, False si no
-            
-        Ejemplo:
-            >>> banco = MicroBanco()
-            >>> banco.validar_cuenta("123456")
-            True
-            >>> banco.validar_cuenta("abc123") 
-            False
         """
         
-        # ¿BUG? ¿Qué pasa si numero_cuenta es None?
-        # ¿Qué pasa si es string vacío?
-        # ¿Qué pasa si tiene espacios?
+        # 🐛 BUG #4: ¿Qué pasa si numero_cuenta es None?
+        # ¿Qué pasa si es un número en lugar de string?
         
-        # Validar que no sea None o vacío
+        # Validaciones básicas
         if not numero_cuenta:
             return False
             
-        # Validar longitud exacta de 6 caracteres
+        # 🐛 BUG #5: ¿Qué pasa con espacios al inicio o final?
+        # "123456 " vs "123456" - ¿Son iguales o diferentes?
+        
         if len(numero_cuenta) != 6:
             return False
             
-        # Validar que todos los caracteres sean dígitos
         if not numero_cuenta.isdigit():
             return False
             
@@ -182,7 +165,7 @@ class MicroBanco:
             numero_cuenta: Número de cuenta a consultar
             
         Returns:
-            Dict con status y saldo (si existe) o mensaje de error
+            Dict con status, mensaje, saldo y timestamp
         """
         
         if not self.validar_cuenta(numero_cuenta):
@@ -191,11 +174,15 @@ class MicroBanco:
                 "mensaje": "Formato de cuenta inválido",
                 "saldo": 0
             }
-            
+        
+        # 🐛 BUG #6: ¿Qué pasa si la cuenta tiene formato válido 
+        # pero no existe en self.cuentas_activas?
+        # El código actual asume que si el formato es válido, existe
+        
         if numero_cuenta not in self.cuentas_activas:
             return {
-                "status": "error", 
-                "mensaje": "Cuenta no existe",
+                "status": "error",
+                "mensaje": "Cuenta no existe", 
                 "saldo": 0
             }
             
@@ -207,40 +194,46 @@ class MicroBanco:
         }
 
 
-# Función de utilidad para testing
 def crear_banco_con_datos_test() -> MicroBanco:
     """
     Crea una instancia de MicroBanco con datos predecibles para testing
     
     Returns:
-        MicroBanco: Instancia configurada con datos de prueba
+        MicroBanco: Instancia configurada
     """
-    banco = MicroBanco()
-    # Los datos ya están configurados en __init__
-    return banco
+    return MicroBanco()
 
 
 if __name__ == "__main__":
-    # Ejemplos de uso - Solo para demostración
-    print("🏦 MicroBanco API - Demo")
-    print("=" * 30)
+    # Demo básico - muestra que "funciona" en casos normales
+    print("🏦 MicroBanco API - Demo Básico")
+    print("=" * 35)
     
     banco = MicroBanco()
     
-    # Ejemplo 1: Transferencia exitosa
-    print("\n💰 Transferencia exitosa:")
+    # Caso que funciona bien
+    print("\n✅ Caso normal:")
     resultado = banco.transferir("123456", "789012", 100)
     print(f"Status: {resultado['status']}")
-    print(f"Mensaje: {resultado['mensaje']}")
+    print(f"Saldo origen: ${resultado['saldo_origen']}")
     
-    # Ejemplo 2: Cálculo de interés
-    print("\n📊 Cálculo de interés:")
+    # Caso que funciona bien  
+    print("\n✅ Cálculo interés normal:")
     interes = banco.calcular_interes(1000, 30, 0.05)
-    print(f"Interés calculado: ${interes}")
+    print(f"Interés: ${interes}")
     
-    # Ejemplo 3: Validación de cuenta
-    print("\n🔍 Validación de cuenta:")
+    # Caso que funciona bien
+    print("\n✅ Validación cuenta normal:")
     es_valida = banco.validar_cuenta("123456")
-    print(f"¿Cuenta válida?: {es_valida}")
+    print(f"¿Válida?: {es_valida}")
     
-    print("\n🎯 ¡Listo para testing!")
+    print("\n🎯 Todo parece funcionar... ¿o no? 🤔")
+    print("🐛 Usa testing para encontrar los bugs ocultos!")
+    
+    # 🎯 HINTS para testing (no spoilers):
+    print("\n💡 Hints para testing:")
+    print("- ¿Qué pasa con valores extremos?")
+    print("- ¿Qué pasa con inputs inesperados?")
+    print("- ¿Qué pasa con edge cases?")
+    print("- ¿Todos los errores se manejan bien?")
+    print("- ¿El comportamiento es lógico en todos los casos?")
