@@ -3,12 +3,6 @@
 
 **🎯 OBJETIVO:** Crear tests desde cero mediante descubrimiento colaborativo
 
-## ¿Qué es diferente en esta versión?
-
-- ❌ **NO** hay ejemplos de tests completos
-- ✅ **SÍ** hay código real con bugs para encontrar
-- ✅ **SÍ** hay coverage analysis integrado
-- ✅ **SÍ** hay discovery auténtico
 
 ## Instalación
 
@@ -126,5 +120,6 @@ Al terminar debes tener:
 - Coverage report mostrando 80%+
 - Lista de bugs encontrados
 - Plan de mejoras para el código
+
 
 **¡Good luck, Testing Heroes!** 🚀
